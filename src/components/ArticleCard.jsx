@@ -1,6 +1,10 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
-import { getArticlesById, getCommentsByArticleId } from "../utils/api";
+import {
+  getArticlesById,
+  getCommentsByArticleId,
+  upvoteArticle,
+} from "../utils/api";
 import CommentCard from "./CommentCard";
 
 export default function ArticleCard() {
@@ -10,6 +14,7 @@ export default function ArticleCard() {
   const [article, setArticle] = useState([]);
   const [comments, setComments] = useState([]);
   const [hide, setHide] = useState(true);
+  const [voted, setVoted] = useState(false);
 
   useEffect(() => {
     async function fetchArticle() {
@@ -28,6 +33,13 @@ export default function ArticleCard() {
     }
     fetchComments();
   }, []);
+
+  async function upvoteArticleById(id) {
+    const result = await upvoteArticle(id);
+
+    setVoted(true);
+  }
+
   return (
     <>
       <div className="article-card">
@@ -41,7 +53,7 @@ export default function ArticleCard() {
           {article.votes}
           <button
             onClick={() => {
-              // increase the vote count
+              upvoteArticleById(id);
             }}
           >
             &hearts;

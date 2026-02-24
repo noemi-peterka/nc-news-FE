@@ -48,3 +48,22 @@ export async function getCommentsByArticleId(id) {
   const data = await res.json();
   return data.comments;
 }
+
+export async function upvoteArticle(id) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/articles/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify({
+        "inc_votes": 1,
+      }),
+    },
+  );
+
+  const data = await res.json();
+  console.log(data);
+  return data.article;
+}
