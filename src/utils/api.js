@@ -1,7 +1,8 @@
 export async function getArticles() {
-  const result = await fetch(`https://nc-news-0plp.onrender.com/api/articles`);
+  const res = await fetch(`https://nc-news-0plp.onrender.com/api/articles`);
 
-  return result.json();
+  const data = await res.json();
+  return data.articles;
 }
 
 export async function getUsers() {
@@ -12,9 +13,16 @@ export async function getUsers() {
 
 export async function getArticlesMostPopular() {
   const res = await fetch(
-    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=desc",
+    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=asc",
   );
-  if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+
   const data = await res.json();
   return data.articles;
+}
+
+export async function getTopics() {
+  const res = await fetch("https://nc-news-0plp.onrender.com/api/topics");
+
+  const data = await res.json();
+  return data.topics;
 }

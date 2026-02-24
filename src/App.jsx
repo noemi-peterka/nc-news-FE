@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router";
 import "./App.css";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
+import TopicsPage from "./pages/TopicsPage";
+import ArticlePage from "./pages/ArticlePage";
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/topics" element={<TopicsPage />} />
+        <Route path="/articles" element={<ArticlePage />} />
       </Routes>
     </>
   );
