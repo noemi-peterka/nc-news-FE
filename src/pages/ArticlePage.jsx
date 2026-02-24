@@ -1,17 +1,35 @@
-import { getArticles } from "../utils/api";
 import { useState, useEffect } from "react";
 import ListCard from "../components/ListCard";
+import ReactPaginate from "react-paginate";
 
 export default function ArticlePage() {
   const [articles, setArticles] = useState([]);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
+  const postsPerPage = 10;
 
   useEffect(() => {
-    async function fetchArticles() {
-      const result = await getArticles();
-      setArticles(result);
-    }
+    const fetchArticles = async () => {
+      const res = await fetch(
+        `https://nc-news-0plp.onrender.com/api/articles?_p=${
+          currentPage + 1
+        }&_limit=${postsPerPage}`,
+      );
+      const data = await res.json();
+
+      const totalPosts = res.headers.get("X-Total-Count");
+      setPageCount(Math.ceil(totalPosts / postsPerPage));
+
+      setArticles(data.articles);
+    };
+
     fetchArticles();
-  }, []);
+  }, [currentPage]);
+
+  const handlePageClick = (event) => {
+    setCurrentPage(event.selected + 1);
+  };
+
   return (
     <>
       <div className="articles-list">
@@ -32,8 +50,19 @@ export default function ArticlePage() {
           );
         })}
       </div>
+
+      <ReactPaginate
+        previousLabel={"Previous"}
+        nextLabel={"Next"}
+        breakLabel={"..."}
+        breakClassName={"break-me"}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={3}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        activeClassName={"active"}
+      />
     </>
   );
 }
-
-// Implement pagination

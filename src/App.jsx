@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import TopicsPage from "./pages/TopicsPage";
 import ArticlePage from "./pages/ArticlePage";
+import ArticleCard from "./components/ArticleCard";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/topics" element={<TopicsPage />} />
         <Route path="/articles" element={<ArticlePage />} />
+        <Route path=":pid" element={<ArticleCard />} />
       </Routes>
     </>
   );

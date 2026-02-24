@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function ListCard(props) {
   const { id, title, author, body, commentCount, date, topic, votes, image } =
     props;
@@ -10,7 +12,9 @@ export default function ListCard(props) {
         <p>{new Date(date).toLocaleDateString("en-GB")}</p>
         <p>Comments: {commentCount}</p>
         <p>Votes: {votes}</p>
-        <button>Read more</button>
+        <Link to={`${id}`} className="nav-link">
+          Read More
+        </Link>
         {/* on click will take you to article card */}
       </div>
     </>

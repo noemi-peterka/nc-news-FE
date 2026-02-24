@@ -1,5 +1,9 @@
-export async function getArticles() {
-  const res = await fetch(`https://nc-news-0plp.onrender.com/api/articles`);
+export async function getArticles(currentPage) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/articles?_p=${
+      currentPage + 1
+    }&_limit=${postsPerPage}`,
+  );
 
   const data = await res.json();
   return data.articles;
