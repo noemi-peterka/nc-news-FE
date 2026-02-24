@@ -30,3 +30,21 @@ export async function getTopics() {
   const data = await res.json();
   return data.topics;
 }
+
+export async function getArticlesById(id) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/articles/${id}`,
+  );
+
+  const data = await res.json();
+  return data.article;
+}
+
+export async function getCommentsByArticleId(id) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/articles/${id}/comments`,
+  );
+
+  const data = await res.json();
+  return data.comments;
+}

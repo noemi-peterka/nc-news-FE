@@ -5,14 +5,14 @@ import ReactPaginate from "react-paginate";
 export default function ArticlePage() {
   const [articles, setArticles] = useState([]);
   const [pageCount, setPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
 
   useEffect(() => {
     const fetchArticles = async () => {
       const res = await fetch(
         `https://nc-news-0plp.onrender.com/api/articles?_p=${
-          currentPage + 1
+          currentPage
         }&_limit=${postsPerPage}`,
       );
       const data = await res.json();
@@ -26,8 +26,8 @@ export default function ArticlePage() {
     fetchArticles();
   }, [currentPage]);
 
-  const handlePageClick = (event) => {
-    setCurrentPage(event.selected + 1);
+  const handleClick = () => {
+    //add logic for the Load more button
   };
 
   return (
@@ -51,18 +51,7 @@ export default function ArticlePage() {
         })}
       </div>
 
-      <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
-        breakLabel={"..."}
-        breakClassName={"break-me"}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={3}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        activeClassName={"active"}
-      />
+      <button onClick={handleClick}>Load more</button>
     </>
   );
 }
