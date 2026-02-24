@@ -9,6 +9,7 @@ export default function ArticleCard() {
 
   const [article, setArticle] = useState([]);
   const [comments, setComments] = useState([]);
+  const [hide, setHide] = useState(true);
 
   useEffect(() => {
     async function fetchArticle() {
@@ -27,7 +28,6 @@ export default function ArticleCard() {
     }
     fetchComments();
   }, []);
-  console.log(comments);
   return (
     <>
       <div className="article-card">
@@ -47,21 +47,30 @@ export default function ArticleCard() {
             &hearts;
           </button>
         </p>
-        <button>Comments</button>
-        <div className="comments-list">
-          {comments.map((comment) => {
-            return (
-              <CommentCard
-                key={comment.comment_id}
-                id={comment.article_id}
-                author={comment.author}
-                body={comment.body}
-                date={comment.created_at}
-                votes={comment.votes}
-              />
-            );
-          })}
-        </div>
+        <button
+          onClick={() => {
+            setHide(!hide);
+          }}
+        >
+          Comments
+        </button>
+
+        {!hide && (
+          <div className="comments-list">
+            {comments.map((comment) => {
+              return (
+                <CommentCard
+                  key={comment.comment_id}
+                  id={comment.article_id}
+                  author={comment.author}
+                  body={comment.body}
+                  date={comment.created_at}
+                  votes={comment.votes}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );

@@ -6,14 +6,16 @@ export default function CommentCard(props) {
         <h4>Written by {author}</h4>
         <p>{new Date(date).toLocaleDateString("en-GB")}</p>
         <p>{body}</p>
-        <p>Votes: {votes}</p>
-        <button
-          onClick={() => {
-            // increase the vote count
-          }}
-        >
-          &hearts;
-        </button>
+        <p>
+          Votes: {votes}{" "}
+          <button
+            onClick={() => {
+              // increase the vote count
+            }}
+          >
+            &hearts;
+          </button>
+        </p>
       </div>
     </>
   );
