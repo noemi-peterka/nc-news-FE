@@ -8,6 +8,11 @@ import {
 } from "../utils/api";
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
+import heart from "../assets/heart.png";
+import redHeart from "../assets/redHeart.png";
+import comment from "../assets/comment.png";
+import userIcon from "../assets/user.png";
+import calendar from "../assets/calendar.png";
 
 export default function ArticleCard() {
   let params = useParams();
@@ -53,8 +58,14 @@ export default function ArticleCard() {
       <div className="article-card">
         <img src={article.article_img_url} alt="" />
         <p>{article.topic}</p>
-        <p>{article.author}</p>
-        <p>{new Date(article.created_at).toLocaleDateString("en-GB")}</p>
+        <div className="icon-text">
+          <img className="user-icon" src={userIcon} alt="user icon" />
+          {article.author}
+        </div>
+        <div className="icon-text">
+          <img className="calendar-icon" src={calendar} alt="calendar icon" />
+          {new Date(article.created_at).toLocaleDateString("en-GB")}
+        </div>
         <h2>{article.title}</h2>
         <p>{article.body}</p>
 
@@ -65,11 +76,7 @@ export default function ArticleCard() {
                 upvoteArticleById(id);
               }}
             >
-              <img
-                className="heart-icon"
-                src="src/assets/heart.png"
-                alt="empty heart icon"
-              />
+              <img className="heart-icon" src={heart} alt="empty heart icon" />
               {article.votes}
             </button>
           </div>
@@ -82,11 +89,7 @@ export default function ArticleCard() {
               }}
             >
               {" "}
-              <img
-                className="heart-icon"
-                src="src/assets/redHeart.png"
-                alt="red heart icon"
-              />
+              <img className="heart-icon" src={redHeart} alt="red heart icon" />
               {article.votes}
             </button>
           </div>
@@ -97,17 +100,11 @@ export default function ArticleCard() {
             setHide(!hide);
           }}
         >
-          <img
-            className="comment-icon"
-            src="src/assets/comment.png"
-            alt="comment icon"
-          />
+          <img className="comment-icon" src={comment} alt="comment icon" />
           {comments.length}
         </button>
 
         <CommentForm id={id} setComments={setComments} />
-
-        {/* Above is where the input form for the comments will go */}
 
         {!hide && (
           <div className="comments-list">

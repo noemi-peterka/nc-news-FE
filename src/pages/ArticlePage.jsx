@@ -2,19 +2,19 @@ import { useState, useEffect } from "react";
 import ListCard from "../components/ListCard";
 import { useParams } from "react-router";
 import { getArticlesByTopic, getArticles } from "../utils/api";
+import Dropdown from "../components/Dropdown";
 
 export default function ArticlePage() {
   let { slug } = useParams();
   const [articles, setArticles] = useState([]);
-  const [topic, setTopic] = useState(slug);
 
   //Need to fix this so that after clicking on articles by topics, you can then go to articles
   // at the moment its keeping the topics articles in show
 
   useEffect(() => {
-    if (topic) {
+    if (slug) {
       async function fetchArticles() {
-        const result = await getArticlesByTopic(topic);
+        const result = await getArticlesByTopic(slug);
 
         setArticles(result);
       }
@@ -27,10 +27,11 @@ export default function ArticlePage() {
       }
       fetchArticles();
     }
-  }, [slug]);
+  }, []);
 
   return (
     <>
+      <Dropdown />
       <div className="articles-list">
         {articles.map((article) => {
           return (

@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function CommentForm(props) {
   let { id } = props;
-  console.log(id);
-  const [newItem, setNewItem] = useState("");
+  const [comment, setComment] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    async function downvoteArticle(id) {
+    async function postComment(id, comment) {
       const res = await fetch(
         `https://nc-news-0plp.onrender.com/api/articles/${id}/comments`,
         {
@@ -17,7 +16,8 @@ export default function CommentForm(props) {
           },
           method: "POST",
           body: JSON.stringify({
-            "inc_votes": -1,
+            "author": "grumpy19",
+            "body": comment,
           }),
         },
       );
@@ -26,8 +26,8 @@ export default function CommentForm(props) {
       console.log(data);
       return data.article;
     }
-
-    setNewItem("");
+    postComment(id, comment);
+    setComment("");
   };
   return (
     <div className="form">
@@ -35,8 +35,8 @@ export default function CommentForm(props) {
         <label>
           Comment:
           <input
-            value={newItem}
-            onChange={(event) => setNewItem(event.target.value)}
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
           />
         </label>
         <button type="submit">Submit</button>
@@ -44,6 +44,3 @@ export default function CommentForm(props) {
     </div>
   );
 }
-// access to comments list
-
-// needs more work!
