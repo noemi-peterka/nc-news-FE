@@ -9,6 +9,14 @@ export default function Dropdown() {
           <option value="author">Author</option>
         </select>
       </label>
+      <label>
+        Topic:
+        <select name="selectedFruit">
+          <option value="coding">Coding</option>
+          <option value="football">Football</option>
+          <option value="cooking">Cooking</option>
+        </select>
+      </label>
     </div>
   );
 }

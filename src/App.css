@@ -137,3 +137,10 @@ button:hover {
   border-radius: 0%;
   padding-right: 10px;
 }
+
+.icon {
+  width: 20px;
+  border-radius: 0%;
+
+  padding-right: 10px;
+}

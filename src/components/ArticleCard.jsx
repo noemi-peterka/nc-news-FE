@@ -112,6 +112,7 @@ export default function ArticleCard() {
               return (
                 <CommentCard
                   key={comment.comment_id}
+                  commentId={comment.comment_id}
                   id={comment.article_id}
                   author={comment.author}
                   body={comment.body}
