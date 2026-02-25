@@ -1,34 +1,33 @@
 import { useState, useEffect } from "react";
 import ListCard from "../components/ListCard";
-import ReactPaginate from "react-paginate";
+import { useParams } from "react-router";
+import { getArticlesByTopic, getArticles } from "../utils/api";
 
 export default function ArticlePage() {
+  let { slug } = useParams();
   const [articles, setArticles] = useState([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 10;
+  const [topic, setTopic] = useState(slug);
+
+  //Need to fix this so that after clicking on articles by topics, you can then go to articles
+  // at the moment its keeping the topics articles in show
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      const res = await fetch(
-        `https://nc-news-0plp.onrender.com/api/articles?_p=${
-          currentPage
-        }&_limit=${postsPerPage}`,
-      );
-      const data = await res.json();
+    if (topic) {
+      async function fetchArticles() {
+        const result = await getArticlesByTopic(topic);
 
-      const totalPosts = res.headers.get("X-Total-Count");
-      setPageCount(Math.ceil(totalPosts / postsPerPage));
+        setArticles(result);
+      }
+      fetchArticles();
+    } else {
+      async function fetchArticles() {
+        const result = await getArticles();
 
-      setArticles(data.articles);
-    };
-
-    fetchArticles();
-  }, [currentPage]);
-
-  const handleClick = () => {
-    //add logic for the Load more button
-  };
+        setArticles(result);
+      }
+      fetchArticles();
+    }
+  }, [slug]);
 
   return (
     <>
@@ -50,8 +49,6 @@ export default function ArticlePage() {
           );
         })}
       </div>
-
-      <button onClick={handleClick}>Load more</button>
     </>
   );
 }

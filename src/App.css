@@ -92,3 +92,48 @@ button:hover {
   border-radius: 20px;
   box-shadow: 2px 2px 5px grey;
 }
+
+.logged-in-img {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.comment-icon {
+  width: 20px;
+  border-radius: 0%;
+
+  padding-right: 10px;
+}
+
+.heart-icon {
+  width: 20px;
+  border-radius: 0%;
+
+  padding-right: 10px;
+}
+
+.calendar-icon {
+  width: 20px;
+  border-radius: 0%;
+
+  padding-right: 10px;
+}
+
+.user-icon {
+  width: 20px;
+  border-radius: 0%;
+  padding-right: 10px;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fire-icon {
+  width: 20px;
+  border-radius: 0%;
+  padding-right: 10px;
+}

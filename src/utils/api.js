@@ -1,24 +1,22 @@
-export async function getArticles(currentPage) {
+export async function getArticlesMostPopular() {
   const res = await fetch(
-    `https://nc-news-0plp.onrender.com/api/articles?_p=${
-      currentPage + 1
-    }&_limit=${postsPerPage}`,
+    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=asc",
   );
 
   const data = await res.json();
   return data.articles;
 }
 
-export async function getUsers() {
-  const result = await fetch(`https://nc-news-0plp.onrender.com/api/users`);
-
-  return result.json();
-}
-
-export async function getArticlesMostPopular() {
+export async function getArticlesByTopic(topic) {
   const res = await fetch(
-    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=asc",
+    `https://nc-news-0plp.onrender.com/api/articles?topic=${topic}`,
   );
+
+  const data = await res.json();
+  return data.articles;
+}
+export async function getArticles() {
+  const res = await fetch(`https://nc-news-0plp.onrender.com/api/articles`);
 
   const data = await res.json();
   return data.articles;
@@ -85,4 +83,13 @@ export async function downvoteArticle(id) {
   const data = await res.json();
   console.log(data);
   return data.article;
+}
+
+export async function getUser() {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/users/grumpy19`,
+  );
+
+  const data = await res.json();
+  return data.user[0];
 }

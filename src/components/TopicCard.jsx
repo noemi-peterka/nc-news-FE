@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 export default function TopicCard(props) {
   const { slug, description, image } = props;
 
@@ -8,8 +10,7 @@ export default function TopicCard(props) {
         <h3>{slug.toUpperCase()}</h3>
 
         <p>{description}</p>
-        <button>Go to {slug}</button>
-        {/* on click will take you to all articles of that topic */}
+        <Link to={`/topics/${slug}`}>Go to {slug}</Link>
       </div>
     </>
   );
