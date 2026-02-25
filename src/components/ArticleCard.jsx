@@ -4,6 +4,7 @@ import {
   getArticlesById,
   getCommentsByArticleId,
   upvoteArticle,
+  downvoteArticle,
 } from "../utils/api";
 import CommentCard from "./CommentCard";
 
@@ -23,7 +24,7 @@ export default function ArticleCard() {
       setArticle(result[0]);
     }
     fetchArticle();
-  }, []);
+  }, [voted]);
 
   useEffect(() => {
     async function fetchComments() {
@@ -40,6 +41,12 @@ export default function ArticleCard() {
     setVoted(true);
   }
 
+  async function downvoteArticleById(id) {
+    const result = await downvoteArticle(id);
+
+    setVoted(false);
+  }
+
   return (
     <>
       <div className="article-card">
@@ -51,20 +58,34 @@ export default function ArticleCard() {
         <p>{article.body}</p>
         <p>
           {article.votes}
-          <button
-            onClick={() => {
-              upvoteArticleById(id);
-            }}
-          >
-            &hearts;
-          </button>
+          {!voted && (
+            <button
+              onClick={() => {
+                upvoteArticleById(id);
+              }}
+            >
+              {" "}
+              &hearts;
+            </button>
+          )}
+
+          {voted && (
+            <button
+              onClick={() => {
+                downvoteArticleById(id);
+              }}
+            >
+              {" "}
+              &#10084;&#65039;
+            </button>
+          )}
         </p>
         <button
           onClick={() => {
             setHide(!hide);
           }}
         >
-          Comments
+          {comments.length} Comments
         </button>
 
         {!hide && (
