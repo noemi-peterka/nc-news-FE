@@ -13,7 +13,14 @@ export default function ArticlePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [err, setErr] = useState(null);
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const effectiveTopic = slug ?? topic;
+
+  useEffect(() => {
+    setPage(1);
+  }, [effectiveTopic, sortBy, order]);
 
   useEffect(() => {
     let ignore = false;
@@ -27,6 +34,8 @@ export default function ArticlePage() {
           topic: effectiveTopic || undefined,
           sort_by: sortBy,
           order,
+          p: page,
+          limit,
         });
 
         if (!ignore) setArticles(result);
@@ -42,7 +51,10 @@ export default function ArticlePage() {
     return () => {
       ignore = true;
     };
-  }, [effectiveTopic, sortBy, order]);
+  }, [effectiveTopic, sortBy, order, page]);
+
+  const hasNext = articles.length === limit;
+  const hasPrev = page > 1;
 
   return (
     <>
@@ -56,6 +68,24 @@ export default function ArticlePage() {
           if (!slug) setTopic(newTopic);
         }}
       />
+
+      <div className="pagination">
+        <button
+          onClick={() => setPage((p) => p - 1)}
+          disabled={!hasPrev || isLoading}
+        >
+          ‹
+        </button>
+
+        <span className="page-indicator">Page {page}</span>
+
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          disabled={!hasNext || isLoading}
+        >
+          ›
+        </button>
+      </div>
 
       {isLoading && <p>Loading...</p>}
       {err && <p>{err}</p>}

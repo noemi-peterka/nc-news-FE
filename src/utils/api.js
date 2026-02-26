@@ -7,12 +7,14 @@ export async function getArticlesMostPopular() {
   return data.articles;
 }
 
-export async function getArticles({ topic, sort_by, order } = {}) {
+export async function getArticles({ topic, sort_by, order, p, limit } = {}) {
   const qs = new URLSearchParams();
 
   if (topic) qs.set("topic", topic);
   if (sort_by) qs.set("sort_by", sort_by);
   if (order) qs.set("order", order);
+  if (p) qs.set("p", String(p));
+  if (limit) qs.set("limit", String(limit));
 
   const url = `https://nc-news-0plp.onrender.com/api/articles${qs.toString() ? `?${qs.toString()}` : ""}`;
 
