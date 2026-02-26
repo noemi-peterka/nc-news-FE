@@ -9,8 +9,8 @@ export default function Header() {
   return (
     <header className="site-header">
       <div className="header-inner">
-        <Link to="/" className="brand" aria-label="Go to homepage">
-          <img className="brand-logo" src={logo} alt="NC News" />
+        <Link to="/" className="brand-text" aria-label="Go to homepage">
+          <h1>NC News</h1>
         </Link>
 
         <div

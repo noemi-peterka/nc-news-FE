@@ -38,7 +38,6 @@ export default function ArticlePage() {
     }
 
     fetchArticles();
-    fetchArticles();
 
     return () => {
       ignore = true;
