@@ -1,6 +1,6 @@
 export async function getArticlesMostPopular() {
   const res = await fetch(
-    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=asc",
+    "https://nc-news-0plp.onrender.com/api/articles?sort_by=votes&order=desc",
   );
 
   const data = await res.json();

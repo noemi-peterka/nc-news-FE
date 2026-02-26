@@ -428,7 +428,6 @@ select:focus {
   line-height: 1.2;
   letter-spacing: -0.01em;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -518,7 +517,6 @@ select:focus {
   color: var(--muted);
   font-size: 14px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

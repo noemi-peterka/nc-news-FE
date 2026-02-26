@@ -25,7 +25,7 @@ export default function ArticleCard() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
-
+  const [commentSort, setCommentSort] = useState("newest");
   const [articleVoted, setArticleVoted] = useState(false);
 
   const [deleteErr, setDeleteErr] = useState(null);
@@ -46,6 +46,13 @@ export default function ArticleCard() {
     }
     fetchComments();
   }, [id]);
+
+  const sortedComments = [...comments].sort((a, b) => {
+    if (commentSort === "votes") return b.votes - a.votes;
+    if (commentSort === "oldest")
+      return newDate(a.created_at) - new Date(b.created_at);
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
 
   async function handleUpvoteArticle() {
     if (!article) return;
@@ -217,7 +224,7 @@ export default function ArticleCard() {
 
           {showComments && (
             <div className="comments-list">
-              {comments.map((c) => (
+              {sortedComments.map((c) => (
                 <CommentCard
                   key={c.comment_id}
                   commentId={c.comment_id}
