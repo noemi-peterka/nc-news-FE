@@ -106,6 +106,23 @@ export default function ArticlePage() {
           />
         ))}
       </div>
+      <div className="pagination">
+        <button
+          onClick={() => setPage((p) => p - 1)}
+          disabled={!hasPrev || isLoading}
+        >
+          ‹
+        </button>
+
+        <span className="page-indicator">Page {page}</span>
+
+        <button
+          onClick={() => setPage((p) => p + 1)}
+          disabled={!hasNext || isLoading}
+        >
+          ›
+        </button>
+      </div>
     </>
   );
 }

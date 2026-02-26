@@ -15,15 +15,8 @@ export default function TopicsPage() {
   }, []);
   return (
     <>
-      <h2>Topics</h2>
-      <TopicForm
-        onCreated={(newTopic) => {
-          setTopics((curr) => {
-            if (curr.some((t) => t.slug === newTopic.slug)) return curr;
-            return [newTopic, ...curr];
-          });
-        }}
-      />
+      <h2 className="topic-header">All Topics</h2>
+
       <div className="topics-list">
         {topics.map((topic) => {
           return (
@@ -36,6 +29,14 @@ export default function TopicsPage() {
           );
         })}
       </div>
+      <TopicForm
+        onCreated={(newTopic) => {
+          setTopics((curr) => {
+            if (curr.some((t) => t.slug === newTopic.slug)) return curr;
+            return [newTopic, ...curr];
+          });
+        }}
+      />
     </>
   );
 }

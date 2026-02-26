@@ -493,18 +493,18 @@ select:focus {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
   transform: translateY(-1px);
 }
-
 /* =========================
-   Topic cards (match article cards)
+   Topic cards (centered layout)
 ========================= */
+
 .topic-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-  text-align: left;
   transition: 180ms ease;
+  text-align: center; /* KEY CHANGE */
 }
 
 .topic-card:hover {
@@ -512,15 +512,49 @@ select:focus {
   transform: translateY(-1px);
 }
 
+/* Banner */
+.topic-banner {
+  height: 110px;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 108, 255, 0.12),
+    rgba(100, 108, 255, 0.02)
+  );
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center; /* center vertically */
+  justify-content: center; /* center horizontally */
+}
+
+/* Content */
+.topic-card .card-content {
+  padding: 22px;
+  display: grid;
+  gap: 10px;
+  justify-items: center; /* center everything */
+}
+
+/* Title */
+.topic-card .card-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+/* Description */
 .topic-desc {
   margin: 0;
   color: var(--muted);
   font-size: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  max-width: 420px; /* prevents ultra-wide lines */
 }
 
+/* CTA button full width */
+.topic-card .card-cta {
+  width: 100%;
+  margin-top: 10px;
+}
 /* =========================
    Article detail page
 ========================= */
@@ -860,4 +894,23 @@ button:active {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+}
+
+.topic-header {
+  text-align: center;
+  margin-bottom: var(--space-4);
+  color: #646cff;
+}
+
+.topic-banner {
+  height: 140px;
+  background: linear-gradient(
+    135deg,
+    rgba(100, 108, 255, 0.12),
+    rgba(100, 108, 255, 0.02)
+  );
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
 }
