@@ -135,7 +135,7 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: 999px;
   background: #fafafa;
-  max-width: 55%;
+  max-width: 80%;
 }
 
 .user-avatar {

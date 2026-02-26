@@ -7,8 +7,6 @@ export async function getArticlesMostPopular() {
   return data.articles;
 }
 
-const BASE_URL = "https://nc-news-0plp.onrender.com/api";
-
 export async function getArticles({ topic, sort_by, order } = {}) {
   const qs = new URLSearchParams();
 
@@ -16,7 +14,7 @@ export async function getArticles({ topic, sort_by, order } = {}) {
   if (sort_by) qs.set("sort_by", sort_by);
   if (order) qs.set("order", order);
 
-  const url = `${BASE_URL}/articles${qs.toString() ? `?${qs.toString()}` : ""}`;
+  const url = `https://nc-news-0plp.onrender.com/api/articles${qs.toString() ? `?${qs.toString()}` : ""}`;
 
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to fetch articles (${res.status})`);
@@ -95,4 +93,20 @@ export async function getUser() {
 
   const data = await res.json();
   return data.user[0];
+}
+
+export async function deleteComment(commentId) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/articles/${commentId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "DELETE",
+    },
+  );
+  if (!res.ok) {
+    throw new Error(`Failed to delete comment (${res.status})`);
+  }
+  return true;
 }
