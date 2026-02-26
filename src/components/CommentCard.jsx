@@ -2,20 +2,25 @@ import bin from "../assets/recycle-bin.png";
 import userIcon from "../assets/user.png";
 import calendar from "../assets/calendar.png";
 import heart from "../assets/heart.png";
-import { useContext } from "react";
+import redHeart from "../assets/redHeart.png";
+import { useContext, useState } from "react";
 import { UserContext } from "./User";
 
 export default function CommentCard({
+  commentId,
   author,
   body,
   date,
   votes,
   onDelete,
-  commentId,
+  onUpvote,
+  onDownvote,
 }) {
   const { loggedInUser } = useContext(UserContext);
   const canDelete = loggedInUser?.username === author;
-  console.log(commentId);
+
+  const [voted, setVoted] = useState(false);
+
   return (
     <div className="comment-card">
       <div className="comment-top">
@@ -55,10 +60,39 @@ export default function CommentCard({
       <p className="comment-body">{body}</p>
 
       <div className="comment-actions">
-        <div className="meta-item">
-          <img className="meta-icon" src={heart} alt="" aria-hidden="true" />
-          <span>{votes}</span>
-        </div>
+        {!voted ? (
+          <button
+            className="action-btn"
+            onClick={() => {
+              setVoted(true);
+              onUpvote(commentId);
+            }}
+          >
+            <img
+              className="action-icon"
+              src={heart}
+              alt=""
+              aria-hidden="true"
+            />
+            <span>{votes}</span>
+          </button>
+        ) : (
+          <button
+            className="action-btn"
+            onClick={() => {
+              setVoted(false);
+              onDownvote(commentId);
+            }}
+          >
+            <img
+              className="action-icon"
+              src={redHeart}
+              alt=""
+              aria-hidden="true"
+            />
+            <span>{votes}</span>
+          </button>
+        )}
       </div>
     </div>
   );

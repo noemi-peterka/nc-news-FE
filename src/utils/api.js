@@ -63,7 +63,6 @@ export async function upvoteArticle(id) {
   );
 
   const data = await res.json();
-  console.log(data);
   return data.article;
 }
 
@@ -82,8 +81,43 @@ export async function downvoteArticle(id) {
   );
 
   const data = await res.json();
-  console.log(data);
   return data.article;
+}
+
+export async function upvoteComment(id) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/comments/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify({
+        "inc_votes": 1,
+      }),
+    },
+  );
+
+  const data = await res.json();
+  return data.comment;
+}
+
+export async function downvoteComment(id) {
+  const res = await fetch(
+    `https://nc-news-0plp.onrender.com/api/comments/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "PATCH",
+      body: JSON.stringify({
+        "inc_votes": -1,
+      }),
+    },
+  );
+
+  const data = await res.json();
+  return data.comment;
 }
 
 export async function getUser() {

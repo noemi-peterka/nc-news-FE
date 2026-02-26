@@ -6,9 +6,13 @@ import {
   upvoteArticle,
   downvoteArticle,
   deleteComment,
+  upvoteComment,
+  downvoteComment,
 } from "../utils/api";
+
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
+
 import heart from "../assets/heart.png";
 import redHeart from "../assets/redHeart.png";
 import commentIcon from "../assets/comment.png";
@@ -21,14 +25,16 @@ export default function ArticleCard() {
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
-  const [voted, setVoted] = useState(false);
+
+  const [articleVoted, setArticleVoted] = useState(false);
+
   const [deleteErr, setDeleteErr] = useState(null);
 
   useEffect(() => {
     async function fetchArticle() {
       const result = await getArticlesById(id);
       setArticle(result[0]);
-      setVoted(false); // reset vote UI when switching article
+      setArticleVoted(false);
     }
     fetchArticle();
   }, [id]);
@@ -41,34 +47,35 @@ export default function ArticleCard() {
     fetchComments();
   }, [id]);
 
-  async function handleUpvote() {
+  async function handleUpvoteArticle() {
     if (!article) return;
-    setVoted(true);
+    setArticleVoted(true);
     setArticle((curr) => ({ ...curr, votes: curr.votes + 1 }));
+
     try {
       await upvoteArticle(id);
     } catch {
-      // rollback if request fails
-      setVoted(false);
+      setArticleVoted(false);
       setArticle((curr) => ({ ...curr, votes: curr.votes - 1 }));
     }
   }
 
-  async function handleDownvote() {
+  async function handleDownvoteArticle() {
     if (!article) return;
-    setVoted(false);
+    setArticleVoted(false);
     setArticle((curr) => ({ ...curr, votes: curr.votes - 1 }));
+
     try {
       await downvoteArticle(id);
     } catch {
-      // rollback if request fails
-      setVoted(true);
+      setArticleVoted(true);
       setArticle((curr) => ({ ...curr, votes: curr.votes + 1 }));
     }
   }
 
   async function handleDeleteComment(commentId) {
     setDeleteErr(null);
+
     const prevComments = comments;
     setComments((curr) => curr.filter((c) => c.comment_id !== commentId));
 
@@ -79,6 +86,43 @@ export default function ArticleCard() {
       setDeleteErr(err.message);
     }
   }
+
+  async function handleUpvoteComment(commentId) {
+    setComments((curr) =>
+      curr.map((c) =>
+        c.comment_id === commentId ? { ...c, votes: c.votes + 1 } : c,
+      ),
+    );
+
+    try {
+      await upvoteComment(commentId);
+    } catch {
+      setComments((curr) =>
+        curr.map((c) =>
+          c.comment_id === commentId ? { ...c, votes: c.votes - 1 } : c,
+        ),
+      );
+    }
+  }
+
+  async function handleDownvoteComment(commentId) {
+    setComments((curr) =>
+      curr.map((c) =>
+        c.comment_id === commentId ? { ...c, votes: c.votes - 1 } : c,
+      ),
+    );
+
+    try {
+      await downvoteComment(commentId);
+    } catch {
+      setComments((curr) =>
+        curr.map((c) =>
+          c.comment_id === commentId ? { ...c, votes: c.votes + 1 } : c,
+        ),
+      );
+    }
+  }
+
   if (!article) return <p>Loading...</p>;
 
   return (
@@ -125,8 +169,8 @@ export default function ArticleCard() {
         <div className="article-detail-body">{article.body}</div>
 
         <div className="article-actions">
-          {!voted ? (
-            <button className="action-btn" onClick={handleUpvote}>
+          {!articleVoted ? (
+            <button className="action-btn" onClick={handleUpvoteArticle}>
               <img
                 className="action-icon"
                 src={heart}
@@ -136,7 +180,7 @@ export default function ArticleCard() {
               <span>{article.votes}</span>
             </button>
           ) : (
-            <button className="action-btn" onClick={handleDownvote}>
+            <button className="action-btn" onClick={handleDownvoteArticle}>
               <img
                 className="action-icon"
                 src={redHeart}
@@ -166,20 +210,24 @@ export default function ArticleCard() {
 
         <div className="comments-section">
           <h2 className="comments-title">Comments</h2>
+
           <CommentForm id={id} setComments={setComments} />
+
           {deleteErr && <p className="form-error">{deleteErr}</p>}
+
           {showComments && (
             <div className="comments-list">
               {comments.map((c) => (
                 <CommentCard
                   key={c.comment_id}
                   commentId={c.comment_id}
-                  id={c.article_id}
                   author={c.author}
                   body={c.body}
                   date={c.created_at}
                   votes={c.votes}
                   onDelete={handleDeleteComment}
+                  onUpvote={handleUpvoteComment}
+                  onDownvote={handleDownvoteComment}
                 />
               ))}
             </div>
