@@ -97,7 +97,7 @@ export async function getUser() {
 
 export async function deleteComment(commentId) {
   const res = await fetch(
-    `https://nc-news-0plp.onrender.com/api/articles/${commentId}`,
+    `https://nc-news-0plp.onrender.com/api/comments/${commentId}`,
     {
       headers: {
         "Content-Type": "application/json",

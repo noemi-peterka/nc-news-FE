@@ -5,6 +5,7 @@ import {
   getCommentsByArticleId,
   upvoteArticle,
   downvoteArticle,
+  deleteComment,
 } from "../utils/api";
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
@@ -21,6 +22,7 @@ export default function ArticleCard() {
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [voted, setVoted] = useState(false);
+  const [deleteErr, setDeleteErr] = useState(null);
 
   useEffect(() => {
     async function fetchArticle() {
@@ -65,6 +67,18 @@ export default function ArticleCard() {
     }
   }
 
+  async function handleDeleteComment(commentId) {
+    setDeleteErr(null);
+    const prevComments = comments;
+    setComments((curr) => curr.filter((c) => c.comment_id !== commentId));
+
+    try {
+      await deleteComment(commentId);
+    } catch (err) {
+      setComments(prevComments);
+      setDeleteErr(err.message);
+    }
+  }
   if (!article) return <p>Loading...</p>;
 
   return (
@@ -153,7 +167,7 @@ export default function ArticleCard() {
         <div className="comments-section">
           <h2 className="comments-title">Comments</h2>
           <CommentForm id={id} setComments={setComments} />
-
+          {deleteErr && <p className="form-error">{deleteErr}</p>}
           {showComments && (
             <div className="comments-list">
               {comments.map((c) => (
@@ -165,6 +179,7 @@ export default function ArticleCard() {
                   body={c.body}
                   date={c.created_at}
                   votes={c.votes}
+                  onDelete={handleDeleteComment}
                 />
               ))}
             </div>
