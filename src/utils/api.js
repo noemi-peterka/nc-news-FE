@@ -146,3 +146,22 @@ export async function deleteComment(commentId) {
   }
   return true;
 }
+
+export async function postTopic({ slug, description }) {
+  const res = await fetch(`https://nc-news-0plp.onrender.com/api/topics`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      "slug": slug,
+      "description": description,
+    }),
+  });
+
+  const data = await res.json().catch(() => {});
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to create topic(${res.status})`);
+  }
+  return data.topic;
+}
