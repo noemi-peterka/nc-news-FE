@@ -7,7 +7,7 @@ export default function Dropdown({
   onTopicChange,
 }) {
   return (
-    <div>
+    <div className="filters">
       <label>
         Sort by:
         <select value={sortBy} onChange={(e) => onSortByChange(e.target.value)}>
