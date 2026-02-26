@@ -7,16 +7,19 @@ export async function getArticlesMostPopular() {
   return data.articles;
 }
 
-export async function getArticlesByTopic(topic) {
-  const res = await fetch(
-    `https://nc-news-0plp.onrender.com/api/articles?topic=${topic}`,
-  );
+const BASE_URL = "https://nc-news-0plp.onrender.com/api";
 
-  const data = await res.json();
-  return data.articles;
-}
-export async function getArticles() {
-  const res = await fetch(`https://nc-news-0plp.onrender.com/api/articles`);
+export async function getArticles({ topic, sort_by, order } = {}) {
+  const qs = new URLSearchParams();
+
+  if (topic) qs.set("topic", topic);
+  if (sort_by) qs.set("sort_by", sort_by);
+  if (order) qs.set("order", order);
+
+  const url = `${BASE_URL}/articles${qs.toString() ? `?${qs.toString()}` : ""}`;
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to fetch articles (${res.status})`);
 
   const data = await res.json();
   return data.articles;

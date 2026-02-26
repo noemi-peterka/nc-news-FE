@@ -1,54 +1,81 @@
 import { useState, useEffect } from "react";
 import ListCard from "../components/ListCard";
 import { useParams } from "react-router";
-import { getArticlesByTopic, getArticles } from "../utils/api";
+import { getArticles } from "../utils/api";
 import Dropdown from "../components/Dropdown";
 
 export default function ArticlePage() {
   let { slug } = useParams();
   const [articles, setArticles] = useState([]);
+  const [sortBy, setSortBy] = useState("created_at");
+  const [order, setOrder] = useState("desc");
+  const [topic, setTopic] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [err, setErr] = useState(null);
 
-  //Need to fix this so that after clicking on articles by topics, you can then go to articles
-  // at the moment its keeping the topics articles in show
+  const effectiveTopic = slug ?? topic;
 
   useEffect(() => {
-    if (slug) {
-      async function fetchArticles() {
-        const result = await getArticlesByTopic(slug);
+    let ignore = false;
 
-        setArticles(result);
-      }
-      fetchArticles();
-    } else {
-      async function fetchArticles() {
-        const result = await getArticles();
+    async function fetchArticles() {
+      setIsLoading(true);
+      setErr(null);
 
-        setArticles(result);
+      try {
+        const result = await getArticles({
+          topic: effectiveTopic || undefined,
+          sort_by: sortBy,
+          order,
+        });
+
+        if (!ignore) setArticles(result);
+      } catch (e) {
+        if (!ignore) setErr(e.message);
+      } finally {
+        if (!ignore) setIsLoading(false);
       }
-      fetchArticles();
     }
-  }, []);
+
+    fetchArticles();
+    fetchArticles();
+
+    return () => {
+      ignore = true;
+    };
+  }, [effectiveTopic, sortBy, order]);
 
   return (
     <>
-      <Dropdown />
+      <Dropdown
+        sortBy={sortBy}
+        order={order}
+        topic={slug ? slug : topic}
+        onSortByChange={setSortBy}
+        onOrderChange={setOrder}
+        onTopicChange={(newTopic) => {
+          if (!slug) setTopic(newTopic);
+        }}
+      />
+
+      {isLoading && <p>Loading...</p>}
+      {err && <p>{err}</p>}
+
       <div className="articles-list">
-        {articles.map((article) => {
-          return (
-            <ListCard
-              key={article.article_id}
-              id={article.article_id}
-              title={article.title}
-              author={article.author}
-              body={article.body}
-              commentCount={article.comment_count}
-              date={article.created_at}
-              topic={article.topic}
-              votes={article.votes}
-              image={article.article_img_url}
-            />
-          );
-        })}
+        {articles.map((article) => (
+          <ListCard
+            key={article.article_id}
+            id={article.article_id}
+            title={article.title}
+            author={article.author}
+            body={article.body}
+            commentCount={article.comment_count}
+            date={article.created_at}
+            topic={article.topic}
+            votes={article.votes}
+            image={article.article_img_url}
+          />
+        ))}
       </div>
     </>
   );

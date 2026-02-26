@@ -5,6 +5,7 @@ import {
   getCommentsByArticleId,
   upvoteArticle,
   downvoteArticle,
+  getArticles,
 } from "../utils/api";
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
