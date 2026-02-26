@@ -1,38 +1,51 @@
 import bin from "../assets/recycle-bin.png";
+import userIcon from "../assets/user.png";
+import calendar from "../assets/calendar.png";
+import heart from "../assets/heart.png";
 
-export default function CommentCard(props) {
-  const { commentId, id, author, body, date, votes } = props;
-
+export default function CommentCard({ author, body, date, votes }) {
   const user = "grumpy19";
+
   return (
-    <>
-      <div className="comment-card">
-        <h4>Written by {author}</h4>
-        <p>{new Date(date).toLocaleDateString("en-GB")}</p>
-        <p>{body}</p>
-        {user !== author && (
-          <p>
-            Votes: {votes}{" "}
-            <button
-              onClick={() => {
-                // increase the vote count
-              }}
-            >
-              &hearts;
-            </button>
-          </p>
-        )}
+    <div className="comment-card">
+      <div className="comment-top">
+        <div className="comment-meta">
+          <div className="meta-item">
+            <img
+              className="meta-icon"
+              src={userIcon}
+              alt=""
+              aria-hidden="true"
+            />
+            <span className="comment-author">{author}</span>
+          </div>
+
+          <div className="meta-item">
+            <img
+              className="meta-icon"
+              src={calendar}
+              alt=""
+              aria-hidden="true"
+            />
+            <span>{new Date(date).toLocaleDateString("en-GB")}</span>
+          </div>
+        </div>
+
         {user === author && (
-          <button
-            onClick={(comment) => {
-              //delete a comment
-              console.log(comment);
-            }}
-          >
-            <img className="icon" src={bin} alt="bin" />
+          <button className="comment-icon-btn" aria-label="Delete comment">
+            <img className="meta-icon" src={bin} alt="" aria-hidden="true" />
           </button>
         )}
       </div>
-    </>
+
+      <p className="comment-body">{body}</p>
+
+      <div className="comment-actions">
+        <div className="meta-item">
+          <img className="meta-icon" src={heart} alt="" aria-hidden="true" />
+          <span>{votes}</span>
+        </div>
+      </div>
+    </div>
   );
 }
