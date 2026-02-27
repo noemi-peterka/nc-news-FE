@@ -27,16 +27,31 @@ export default function ArticleCard() {
   const [showComments, setShowComments] = useState(false);
   const [commentSort, setCommentSort] = useState("newest");
   const [articleVoted, setArticleVoted] = useState(false);
+  const [err, setErr] = useState(null);
 
   const [deleteErr, setDeleteErr] = useState(null);
 
   useEffect(() => {
+    let ignore = false;
     async function fetchArticle() {
-      const result = await getArticlesById(id);
+      setErr(null);
+      setArticle(null);
+      try {
+        const result = await getArticlesById(id);
+
+        if (!ignore) setArticle(result[0]);
+      } catch (e) {
+        if (!ignore) setErr(e);
+      }
+
       setArticle(result[0]);
       setArticleVoted(false);
     }
+
     fetchArticle();
+    return () => {
+      ignore = true;
+    };
   }, [id]);
 
   useEffect(() => {
@@ -129,6 +144,26 @@ export default function ArticleCard() {
       );
     }
   }
+  if (err?.status === 404) {
+    return (
+      <div className="page-hero">
+        <div className="page-hero-left">
+          <div className="page-kicker">Not found</div>
+          <h2 className="page-title">Article not found</h2>
+          <p className="page-subtitle">
+            This article may have been deleted or the link is incorrect.
+          </p>
+          <Link className="card-cta" to="/articles">
+            Back to Articles
+          </Link>
+        </div>
+      </div>
+    );
+  }
+  if (err)
+    return (
+      <p className="form-error">Something went wrong. Please try again.</p>
+    );
 
   if (!article) return <p>Loading...</p>;
 
