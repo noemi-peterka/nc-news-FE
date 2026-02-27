@@ -85,11 +85,17 @@ Users are shown clear, friendly messages instead of raw server errors.
 1️⃣ Clone the repository
 
 > git clone https://github.com/noemi-peterka/nc-news-FE.git
-> 2️⃣ Navigate into the project directory
+
+2️⃣ Navigate into the project directory
+
 > cd nc-news-FE
-> 3️⃣ Install dependencies
+
+3️⃣ Install dependencies
+
 > npm install
-> 4️⃣ Run the development server
+
+4️⃣ Run the development server
+
 > npm run dev
 
 The app will run locally (usually at):
