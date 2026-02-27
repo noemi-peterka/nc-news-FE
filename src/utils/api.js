@@ -4,6 +4,9 @@ export async function getArticlesMostPopular() {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to get articles(${res.status})`);
+  }
   return data.articles;
 }
 
@@ -29,6 +32,9 @@ export async function getTopics() {
   const res = await fetch("https://nc-news-0plp.onrender.com/api/topics");
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to get topics(${res.status})`);
+  }
   return data.topics;
 }
 
@@ -38,6 +44,9 @@ export async function getArticlesById(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to get article(${res.status})`);
+  }
   return data.article;
 }
 
@@ -47,6 +56,9 @@ export async function getCommentsByArticleId(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to get comments(${res.status})`);
+  }
   return data.comments;
 }
 
@@ -65,6 +77,9 @@ export async function upvoteArticle(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to upvote article(${res.status})`);
+  }
   return data.article;
 }
 
@@ -83,6 +98,9 @@ export async function downvoteArticle(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to downvote article(${res.status})`);
+  }
   return data.article;
 }
 
@@ -101,6 +119,9 @@ export async function upvoteComment(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to upvote comment(${res.status})`);
+  }
   return data.comment;
 }
 
@@ -119,6 +140,9 @@ export async function downvoteComment(id) {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to downvote comment(${res.status})`);
+  }
   return data.comment;
 }
 
@@ -128,6 +152,9 @@ export async function getUser() {
   );
 
   const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to get user(${res.status})`);
+  }
   return data.user[0];
 }
 
@@ -148,6 +175,25 @@ export async function deleteComment(commentId) {
 }
 
 export async function postTopic({ slug, description }) {
+  const res = await fetch(`https://nc-news-0plp.onrender.com/api/topics`, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify({
+      "slug": slug,
+      "description": description,
+    }),
+  });
+
+  const data = await res.json().catch(() => {});
+  if (!res.ok) {
+    throw new Error(data.msg || `Failed to create topic(${res.status})`);
+  }
+  return data.topic;
+}
+
+export async function postArticle({ title, topic, author, body }) {
   const res = await fetch(`https://nc-news-0plp.onrender.com/api/topics`, {
     headers: {
       "Content-Type": "application/json",

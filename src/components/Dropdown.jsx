@@ -19,7 +19,7 @@ export default function Dropdown({
       </label>
 
       <label>
-        Order:
+        Order by:
         <select value={order} onChange={(e) => onOrderChange(e.target.value)}>
           <option value="desc">Desc</option>
           <option value="asc">Asc</option>
