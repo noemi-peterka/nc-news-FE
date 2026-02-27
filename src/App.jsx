@@ -6,7 +6,7 @@ import TopicsPage from "./pages/TopicsPage";
 import ArticlePage from "./pages/ArticlePage";
 import ArticleCard from "./components/ArticleCard";
 import { UserProvider } from "./components/User";
-import NotFoundPage from "./pages/NotFoundPage"
+import NotFoundPage from "./pages/NotFoundPage";
 function App() {
   return (
     <UserProvider>
@@ -17,7 +17,7 @@ function App() {
         <Route path="/articles" element={<ArticlePage />} />
         <Route path="/articles/:id" element={<ArticleCard />} />
         <Route path="/topics/:slug" element={<ArticlePage />} />
-        <Route path="*" element={<NotFoundPage />}>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </UserProvider>
   );
