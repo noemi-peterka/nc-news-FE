@@ -5,13 +5,29 @@ import flame from "../assets/fire-flame.png";
 
 export default function HomePage() {
   const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [err, setErr] = useState(null);
 
   useEffect(() => {
+    let ignore = false;
+
     async function fetchArticles() {
-      const result = await getArticlesMostPopular();
-      setArticles(result);
+      setIsLoading(true);
+      setErr(null);
+      try {
+        const result = await getArticlesMostPopular();
+
+        if (!ignore) setArticles(result);
+      } catch (e) {
+        if (!ignore) setErr(e.message);
+      } finally {
+        if (!ignore) setIsLoading(false);
+      }
     }
     fetchArticles();
+    return () => {
+      ignore = true;
+    };
   }, []);
   return (
     <>
@@ -30,6 +46,9 @@ export default function HomePage() {
           <p className="page-subtitle">Most popular stories right now</p>
         </div>
       </div>
+
+      {isLoading && <p>Loading...</p>}
+      {err && <p>{err}</p>}
 
       <div className="articles-list">
         {articles.map((article) => (

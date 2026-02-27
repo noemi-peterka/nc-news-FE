@@ -2,7 +2,6 @@ import Navbar from "./Navbar";
 import { Link } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "./User";
-import logo from "../assets/logo.png";
 
 export default function Header() {
   const { loggedInUser } = useContext(UserContext);
